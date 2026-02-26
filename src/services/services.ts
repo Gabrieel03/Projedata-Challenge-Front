@@ -1,54 +1,79 @@
 import axios from "axios";
+import type Product from "../models/Product";
+import type RawMaterial from "../models/RawMaterial";
+import type ProductRawMaterial from "../models/ProductRawMaterial";
+import type SimulationResponseDTO from "../models/SimulationResponseDTO";
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
 })
 
+//Product 
 export const getAllProducts = async () => {
-    try {
-        const response = await api.get("/products");
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching products:", error);
-        throw error;
-    }
-}
+    const response = await api.get<Product[]>("/products");
+    return response.data;
+};
 
-export const createProduct = async (productData: { name: string; price: number }) => {
-    try {
-        const response = await api.post("/products", productData);
-        return response.data;
-    } catch (error) {
-        console.error("Error creating product:", error);
-        throw error;
-    }
-}
+export const createProduct = async (productData: Omit<Product, 'id'>) => {
+    const response = await api.post<Product>("/products", productData);
+    return response.data;
+};
 
-export const updateProduct = async (id: number, productData: { name: string; price: number }) => {
-    try {
-        const response = await api.put(`/products/${id}`, productData);
-        return response.data;
-    } catch (error) {
-        console.error("Error updating product:", error);
-        throw error;
-    }
-}
+export const updateProduct = async (id: number, productData: Omit<Product, 'id'>) => {
+    const response = await api.put<Product>(`/products/${id}`, productData);
+    return response.data;
+};
 
 export const deleteProduct = async (id: number) => {
-    try {
-        await api.delete(`/products/${id}`);
-    } catch (error) {
-        console.error("Error deleting product:", error);
-        throw error;
-    }
-}
+    await api.delete(`/products/${id}`);
+};
 
 export const getProductById = async (id: number) => {
-    try {
-        const response = await api.get(`/products/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching product by ID:", error);
-        throw error;
-    }
-}
+    const response = await api.get<Product>(`/products/${id}`);
+    return response.data;
+};
+
+//Raw Material
+export const getAllRawMaterials = async () => {
+    const response = await api.get<RawMaterial[]>("/raw-materials");
+    return response.data;
+};
+
+export const createRawMaterial = async (data: Omit<RawMaterial, 'id'>) => {
+    const response = await api.post<RawMaterial>("/raw-materials", data);
+    return response.data;
+};
+
+export const updateRawMaterial = async (id: number, data: Omit<RawMaterial, 'id'>) => {
+    const response = await api.put<RawMaterial>(`/raw-materials/${id}`, data);
+    return response.data;
+};
+
+export const deleteRawMaterial = async (id: number) => {
+    await api.delete(`/raw-materials/${id}`);
+};
+
+//Product-raw-materials
+export const getAllRecipes = async () => {
+    const response = await api.get<ProductRawMaterial[]>("/product-raw-materials");
+    return response.data;
+};
+
+export const createRecipe = async (productId: number, rawMaterialId: number, quantityNeeded: number) => {
+    const payload = {
+        product: { id: productId },
+        rawMaterial: { id: rawMaterialId },
+        quantityNeeded
+    };
+    const response = await api.post<ProductRawMaterial>("/product-raw-materials", payload);
+    return response.data;
+};
+
+export const deleteRecipe = async (id: number) => {
+    await api.delete(`/product-raw-materials/${id}`);
+};
+
+export const simulateProduction = async () => {
+    const response = await api.get<SimulationResponseDTO>("/simulation");
+    return response.data;
+};
