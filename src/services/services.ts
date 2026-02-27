@@ -1,7 +1,6 @@
 import axios from "axios";
 import type Product from "../models/Product";
 import type RawMaterial from "../models/RawMaterial";
-import type ProductRawMaterial from "../models/ProductRawMaterial";
 import type SimulationResponseDTO from "../models/SimulationResponseDTO";
 
 const api = axios.create({
