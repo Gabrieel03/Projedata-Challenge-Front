@@ -39,7 +39,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col gap-6 font-sans">
 
-      <div className="border-b-2 border-[#003366] pb-2 flex justify-between items-center">
+     <div className="border-b-2 border-[#003366] pb-2 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <h1 className="text-2xl font-extrabold text-[#003366] uppercase tracking-wide">
           Centro de Comando de Produção
         </h1>
