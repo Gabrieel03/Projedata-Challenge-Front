@@ -54,23 +54,34 @@ export const deleteRawMaterial = async (id: number) => {
 };
 
 //Product-raw-materials
+
 export const getAllRecipes = async () => {
-    const response = await api.get<ProductRawMaterial[]>("/product-raw-materials");
-    return response.data;
+  const response = await api.get("/product-recipes");
+  return response.data;
 };
 
 export const createRecipe = async (productId: number, rawMaterialId: number, quantityNeeded: number) => {
-    const payload = {
-        product: { id: productId },
-        rawMaterial: { id: rawMaterialId },
-        quantityNeeded
-    };
-    const response = await api.post<ProductRawMaterial>("/product-raw-materials", payload);
-    return response.data;
+  const payload = {
+    productId: productId,
+    rawMaterialId: rawMaterialId,
+    quantity: quantityNeeded
+  };
+  const response = await api.post("/product-recipes", payload);
+  return response.data;
+};
+
+export const updateRecipe = async (id: number, productId: number, rawMaterialId: number, quantityNeeded: number) => {
+  const payload = {
+    productId: productId,
+    rawMaterialId: rawMaterialId,
+    quantity: quantityNeeded // O Java espera 'quantity'
+  };
+  const response = await api.put(`/product-recipes/${id}`, payload);
+  return response.data;
 };
 
 export const deleteRecipe = async (id: number) => {
-    await api.delete(`/product-raw-materials/${id}`);
+  await api.delete(`/product-recipes/${id}`);
 };
 
 export const simulateProduction = async () => {
